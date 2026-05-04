@@ -1,10 +1,15 @@
-import db from '../config/db.js'
-
+import db from '../config/db.js';
+import {BaseModel} from '../models/BaseModel.js';
 class UserModel {
   static async getAll() {
     const [rows] = await db.query('SELECT * FROM users')
     return rows
   }
+  static async find(id) {
+    const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [id])
+    return rows
+  }
+  
 
   static async create(name) {
     const [result] = await db.query('INSERT INTO users (name) VALUES (?)', [name])

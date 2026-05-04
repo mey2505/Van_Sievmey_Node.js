@@ -1,5 +1,5 @@
 import UserModel from "../models/UserModels.js"
-import { Backcontroller } from "../Controller/BackController.js"
+import { Backcontroller } from "../Controller/BaseController.js"
 
 
 export class UserController extends Backcontroller{
@@ -12,6 +12,15 @@ export class UserController extends Backcontroller{
             res.status(500).json({error: error.message})
         }
     
+    }
+    find= async (req, res)=>{
+        try{
+            const users = await UserModel.find()
+            this.success(res,"Users retrieved successfully",users);
+           
+        }catch(error){
+            res.status(500).json({error: error.message})
+        }
     }
     createUser= async(req,res)=>{
         const name = req.body.name;
