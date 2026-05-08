@@ -1,20 +1,17 @@
-export class Backcontroller{
-    success(res,message,data= null, statusCode=200){
-        return res.status(statusCode).json({
-            success: true,
-            message,
-            data,
-        });
-    
-    }
-    
-error(res,message,statusCode){
+export class BaseController {
+  success(res, message, data = null, statusCode = 200) {
     return res.status(statusCode).json({
-        success: false,
-        message: message,
+      success: true,
+      message,
+      data,
     });
+  }
 
+  error(res, message, statusCode = 500) {
+    return res.status(statusCode).json({
+      success: false,
+      message,
+    });
+  }
 }
-    
-    
-}
+export default new BaseController();

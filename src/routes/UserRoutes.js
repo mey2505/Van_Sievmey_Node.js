@@ -6,6 +6,7 @@ const controller = new UserController();
 
 router.get('/users', (req, res) => controller.getAll(req, res));
 router.post('/users', (req, res) => controller.createUser(req, res));
+router.get('/users/:id', (req, res) => controller.find(req, res));
 router.put('/users/:id', (req, res) => controller.updateUser(req, res));
 router.delete('/users/:id', (req, res) => controller.delete(req, res));
 

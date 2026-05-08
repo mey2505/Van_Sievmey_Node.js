@@ -1,7 +1,7 @@
 import ProductModel from "../models/ProductModel.js";
-import { Backcontroller } from "../Controller/BaseController.js";
+import { BaseController } from "../Controller/BaseController.js";
 
-export class ProductController extends Backcontroller {
+export class ProductController extends BaseController {
 
     // Get all products
     getAll = async (req, res) => {

@@ -1,77 +1,78 @@
-import UserModel from "../models/UserModels.js"
-import { Backcontroller } from "../Controller/BaseController.js"
+import { BaseController } from "./BaseController.js";
+import UserService from "../Services/UserService.js";
 
+export class UserController extends BaseController {
+  constructor() {
+    super();
+    this.userService = new UserService();
+  }
 
-export class UserController extends Backcontroller{
-    getAll= async (req, res)=>{
-        try{
-            const users = await UserModel.getAll()
-            this.success(res,"Users retrieved successfully",users);
-           
-        }catch(error){
-            res.status(500).json({error: error.message})
-        }
-    
-    }
-    find= async (req, res)=>{
-        try{
-            const users = await UserModel.find()
-            this.success(res,"Users retrieved successfully",users);
-           
-        }catch(error){
-            res.status(500).json({error: error.message})
-        }
-    }
-    createUser= async(req,res)=>{
-        const name = req.body.name;
-        if (!name) {
-            return res.status(400).json({ error: 'name is required' });
-        }
-
-        try{
-            const user = await UserModel.create(name);
-            this.success(res,"User created successfully",user);
-        }catch (error){
-            res.status(500).json({ error: error.message })
-        }
-    }
-    updateUser = async (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-
+  getAll = async (req, res) => {
     try {
-        if (!name) {
-            return res.status(400).json({ error: 'name is required' });
-        }
-
-        const updatedUser = await UserModel.update(id, name);
-
-        if (!updatedUser) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        this.success(res, "User updated successfully", updatedUser);
-
+      const users = await this.userService.getUsers();
+      this.success(res, "Users retrieved successfully", users);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      this.error(res, error.message);
     }
+  };
 
+  find = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const user = await this.userService.getUser(id);
+
+      if (!user) {
+        return this.error(res, "User not found", 404);
+      }
+
+      this.success(res, "User retrieved successfully", user);
+    } catch (error) {
+      this.error(res, error.message);
     }
-        delete=async(req,res)=>{
-            try{
-                const {id} = req.params;
-                const deleted = await UserModel.delete(id);
+  };
 
-                if (!deleted) {
-                    return res.status(404).json({ error: 'User not found' })
-                }
+  createUser = async (req, res) => {
+    try {
+      const { name } = req.body;
+      const user = await this.userService.createUser(name);
 
-               this.success(res,"User delete successfully",deleted);
+      this.success(res, "User created successfully", user, 201);
+    } catch (error) {
+      this.error(res, error.message, 400);
+    }
+  };
 
-            }catch (error){
-                res.status(500).json({ error: error.message })
-            }
-        }
+  updateUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name } = req.body;
 
+      const user = await this.userService.updateUser(id, name);
+
+      if (!user) {
+        return this.error(res, "User not found", 404);
+      }
+
+      this.success(res, "User updated successfully", user);
+    } catch (error) {
+      this.error(res, error.message);
+    }
+  };
+
+  delete = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleted = await this.userService.deleteUser(id);
+
+      if (!deleted) {
+        return this.error(res, "User not found", 404);
+      }
+
+      this.success(res, "User deleted successfully");
+    } catch (error) {
+      this.error(res, error.message);
+    }
+  };
 }
-export default new UserController()
+
+export default new UserController();

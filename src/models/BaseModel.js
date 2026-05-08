@@ -1,22 +1,22 @@
 export class BaseModel {
   getAll() {
-    throw new Error('getAll() must be implemented');
-  }
-  find(){
-    throw new Error('find() must be implemented');
+    throw new Error("Method not implemented");
   }
 
-  create(name) {
-    throw new Error('create() must be implemented');
+  find(id) {
+    throw new Error("Method not implemented");
   }
 
-  update(id, name) {
-    throw new Error('update() must be implemented');
+  create(data) {
+    throw new Error("Method not implemented");
+  }
+
+  update(id, data) {
+    throw new Error("Method not implemented");
   }
 
   delete(id) {
-    throw new Error('delete() must be implemented');
+    throw new Error("Method not implemented");
   }
 }
-
-export default BaseModel;
+export default new BaseModel();
